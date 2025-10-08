@@ -1,0 +1,66 @@
+# Image files
+*.png
+*.bayerRG
+
+!test.png
+
+# IDE specific files
+/.vscode/
+
+# vmem files for persistent parameters
+*.vmem
+
+# Jpeg xl encoded files
+*.jxl
+
+# Compiled files
+/sim/camera
+/src/pipeline/pipeline
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+!external_modules/*.so
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+
+# Project binary files
+/bin/*
+!/bin/.gitkeep
+
+# Project object files
+# /lib/*
+# !/lib/.gitkeep
+
+# Project logs files
+/log/*
+!/log/.gitkeep
+/lib/dtp/*
