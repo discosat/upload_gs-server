@@ -18,6 +18,7 @@
 /* These three functions must be provided in arch specific way */
 int router_start(void);
 int server_start(void);
+void server(void);
 
 static void *server_task(void *param) {
     server();
