@@ -1,3 +1,6 @@
 [submodule "lib/dtp"]
 	path = lib/dtp
 	url = https://github.com/discosat/libdtp.git
+[submodule "lib/csp"]
+	path = lib/csp
+	url = https://github.com/spaceinventor/libcsp.git
