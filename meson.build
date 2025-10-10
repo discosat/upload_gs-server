@@ -11,22 +11,27 @@ project('upload_sat', 'c', version: '0.1.0', subproject_dir: 'lib',
 
 sources = files(
     'src/main.c',
-    #'src/vmem/vmem_upload_local.c',
-	#'src/vmem/vmem_dtp_server.c',
-	#'src/vmem/vmem_storage.c',
-	#'src/vmem/vmem_ring_buffer.c',
-	#'src/vmem/vmem_upload_local.c',
+    'src/vmem/vmem_upload_local.c',
+    'src/vmem/vmem_dtp_server.c',
+    'src/vmem/vmem_storage.c',
+    'src/vmem/vmem_ring_buffer.c',
+    'src/vmem/vmem_upload_local.c',
+    'src/protobuf/metadata.pb-c.c',
 )
 
 dirs = include_directories(
     'src/include',
-    #'src/include/vmem',
+    'src/include/protobuf',
+    'src/include/param',
+    'src/include/vmem',
 )
 
 csp_dep = dependency('csp', fallback: ['csp', 'csp_dep'])
 dtp_server_dep = dependency('dtp_server', fallback: ['dtp', 'dtp_server_dep'])
+param_dep = dependency('param', fallback: ['param', 'param_dep'])
+proto_c_dep = dependency('libprotobuf-c', fallback: ['protobuf-c', 'proto_c_dep'])
 m_dep = meson.get_compiler('c').find_library('m', required : false)
-deps = [csp_dep, dtp_server_dep, m_dep]
+deps = [csp_dep, param_dep, dtp_server_dep, proto_c_dep,  m_dep]
 
 c_args = ['-DHOSTNAME="@0@"'.format(get_option('hostname'))]
 

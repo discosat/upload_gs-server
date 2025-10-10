@@ -13,7 +13,14 @@
 #include <csp/drivers/usart.h>
 #include <csp/drivers/can_socketcan.h>
 #include <csp/interfaces/csp_if_zmqhub.h>
+#include <param/param_server.h>
 
+#include <vmem/vmem_server.h>
+#include <vmem/vmem_file.h>
+#include <vmem/vmem_ring.h>
+#include "vmem_storage.h"
+#include "vmem_ring_buffer.h"
+#include "vmem_dtp_server.h"
 
 /* These three functions must be provided in arch specific way */
 int router_start(void);
