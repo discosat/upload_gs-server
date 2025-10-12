@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include <pthread.h>
+#include <stdio.h>
 
 #include <csp/csp.h>
 #include <csp/drivers/usart.h>
@@ -113,7 +114,22 @@ void server(void) {
 			switch (csp_conn_dport(conn)) {
 			case SERVER_PORT:
 				/* Process packet here */
-				csp_print("Packet received on SERVER_PORT: %s\n", (char *) packet->data);
+				csp_print("Packet received on SERVER_PORT (len=%u): %.*s\n", packet->length, (int)packet->length, (char *)packet->data);
+
+                // imma try to save the reveiced data
+                const char *filename = "received_data.txt";
+                FILE *fp = fopen(filename, "ab"); // "ab" means Append Binary mode
+
+                if (fp != NULL) {
+                    // Write packet->length bytes from packet->data into the file
+                    fwrite(packet->data, 1, packet->length, fp);
+                    fclose(fp); // Close the file
+                    csp_print("Appended %u bytes to %s\n", packet->length, filename);
+                } else {
+                    // If opening the file failed, print the system error
+                    perror("Failed to open file for writing");
+                }
+
 				csp_buffer_free(packet);
 				++server_received;
 				break;
