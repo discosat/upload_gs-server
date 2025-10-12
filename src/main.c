@@ -29,12 +29,14 @@ int server_start(void);
 void server(void);
 
 static void *server_task(void *param) {
+    printf("main:server_task: received param address: %p\n", &param);
     server();
     return NULL;
 }
 
 void *router_task(void *param)
 {
+    printf("main:router_task: received param address: %p\n", &param);
 	while (1)
 	{
 		csp_route_work();
@@ -117,7 +119,7 @@ void server(void) {
 				csp_print("Packet received on SERVER_PORT (len=%u): %.*s\n", packet->length, (int)packet->length, (char *)packet->data);
 
                 // imma try to save the reveiced data
-                const char *filename = "received_data.txt";
+                const char *filename = "received_data/received_data.txt";
                 FILE *fp = fopen(filename, "ab"); // "ab" means Append Binary mode
 
                 if (fp != NULL) {
