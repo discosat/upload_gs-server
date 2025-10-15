@@ -64,3 +64,6 @@
 /log/*
 !/log/.gitkeep
 /lib/dtp/*
+
+# other misc. files
+/misc/*
