@@ -29,17 +29,9 @@
 /* CSP read timeout in seconds*/
 #define CSP_TIMEOUT 50
 
-typedef struct
-{
-    char filename[64];
-    uint32_t filesize;
-    char file_dest[128];
-} file_meta_t;
-
 /* These functions must be provided in arch specific way */
 void *dtp_server_task(void *param);
 void *upload_server_task(void *param);
-file_meta_t generate_file_meta();
 
 // Vmem server stuff.
 static void *vmem_server_task(void *param)
@@ -80,8 +72,7 @@ void *upload_server_task(void *param)
 
         csp_packet_t *request = csp_read(conn, CSP_TIMEOUT);
 
-        file_meta_t fmeta = generate_file_meta();
-
+        /* Is this correct?*/
         uint32_t observation_amount = vmem_ring_get_amount_of_elements(&vmem_images);
 
         csp_packet_t *response = csp_buffer_get(sizeof(uint32_t));
@@ -96,17 +87,6 @@ void *upload_server_task(void *param)
 
         csp_close(conn);
     }
-}
-
-file_meta_t generate_file_meta()
-{
-    file_meta_t f_metat = {
-        .file_dest = "/",
-        .filename = "example.txt",
-        .filesize = 0,
-    };
-
-    return f_metat;
 }
 
 // For routing.
