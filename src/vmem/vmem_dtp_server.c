@@ -18,9 +18,25 @@ typedef struct observation_meta {
 
 // Read the observation at specified index within ring buffer
 static uint32_t observation_read(uint16_t index, uint32_t offset_within_observation, void *output, uint32_t size) {
-    uint32_t offset_within_ring_buffer = vmem_ring_offset(&vmem_images, index, offset_within_observation);
+    char filename[256];
+
+    printf("\t - vmem_dtp_server:observation_read -> received index: %u", index);
+
+    // placeholder name for now
+    snprintf(filename, sizeof(filename), "uploaded-data.dat");
+
+    FILE *fp = fopen(filename, "rb");
+    if (fp == NULL) {
+        return 0;
+    }
     
-	(&vmem_images)->read(&vmem_images, offset_within_ring_buffer, output, size);
+    // Move the file pointer to the specified offset
+    fseek(fp, offset_within_observation, SEEK_SET);
+
+    // Read 'size' bytes from the file into the output buffer
+    size = (size_t)fread(output, 1, size, fp);
+
+    fclose(fp);
 
     return size; // Assume that everything has been read, since the vmem api doesn't return any value to indicate how much data is read
 }
@@ -29,13 +45,27 @@ static uint32_t observation_read(uint16_t index, uint32_t offset_within_observat
 // The provided payload_id is intepreted as the index
 bool get_payload_meta(dftp_payload_meta_t *meta, uint16_t payload_id) {
 
-    int is_valid = vmem_ring_is_valid_index(&vmem_images, (uint32_t) payload_id);
-    if (!is_valid) {
+
+    printf("\t - vmem_dtp_server:get_payload_meta -> received payload_id: %u", payload_id);
+
+    char filename[256];
+    snprintf(filename, sizeof(filename), "upload-data.dat");
+
+    FILE *fp = fopen(filename, "rb");
+    if (fp == NULL) {
         return false;
     }
-    uint32_t data_len = vmem_ring_element_size(&vmem_images, payload_id);
 
-    meta->size = data_len;
+    // Get the size of the file
+    fseek(fp, 0, SEEK_END);
+    long size = ftell(fp);
+    fclose(fp);
+
+    if (size < 0) {
+        return false; 
+    }
+
+    meta->size = (uint32_t)size;
     meta->read = observation_read;
 
     return true;
