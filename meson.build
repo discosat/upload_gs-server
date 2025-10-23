@@ -17,6 +17,7 @@ sources = files(
     'src/vmem/vmem_ring_buffer.c',
     'src/vmem/vmem_upload_local.c',
     'src/protobuf/metadata.pb-c.c',
+    'src/protobuf/uploadmetadata.pb-c.c',
 )
 
 dirs = include_directories(
