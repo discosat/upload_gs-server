@@ -25,7 +25,7 @@
 #include "vmem_dtp_server.h"
 
 /* Server port, the port the server listens on for incoming connections from the client. */
-#define SERVER_PORT 10
+#define SERVER_PORT 13
 /* CSP read timeout in seconds*/
 #define CSP_TIMEOUT 50
 
